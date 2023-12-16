@@ -1,0 +1,97 @@
+body {
+    padding-top: 20px;
+    margin: 0;
+}
+
+.navbar {
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+}
+
+.navbar-brand,
+.nav-link {
+    color: #007BFF;
+}
+
+/* 修改 navbar-toggler 樣式 */
+.navbar-toggler {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+.banner-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.modal-header {
+    background-color: #007BFF;
+    color: white;
+}
+
+.btn-custom {
+    background-color: white;
+    color: black;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    padding: 8px 16px; /* 調整內邊距 */
+    margin: 0 auto; /* 在小屏幕上居中 */
+    overflow: visible;
+}
+
+.btn-custom:hover {
+    color: #007BFF;
+}
+
+/* 調整小藍點的位置 */
+.btn-custom::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background-color: #007BFF;
+    border-radius: 50%;
+    position: absolute;
+    top: 25%;
+    right: 5px; /* 根據新的內邊距進行調整 */
+    transition: opacity 0.3s, transform 0.3s;
+    opacity: 0;
+    transform: translate(50%, -50%) scale(0); /* 調整 transform */
+}
+
+.btn-custom:hover::after {
+    opacity: 1;
+    transform: translate(50%, -50%) scale(1); /* 調整 transform */
+}
+
+.finger-column {
+    width: 150px;
+}
+
+/* 當導航欄在小屏幕上展開時，使按鈕居中顯示 */
+@media (max-width: 991px) {
+    .navbar-nav {
+        width: 100%;
+        text-align: center;
+    }
+    .nav-item {
+        display: inline-block;
+        float: none;
+    }
+}
+
+/* 針對小屏幕的按鈕樣式 */
+@media (max-width: 767px) {
+    .btn-custom {
+        max-width: 150px; /* 按鈕的最大寬度 */
+    }
+    .btn-custom::after {
+        right: 1px; /* 調整小屏幕上的小藍點位置 */
+    }
+}

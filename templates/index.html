@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手指代碼與數值測試</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="#">
+            <img src="{{ url_for('static', filename='images/SharingAcademy.png') }}" width="113" height="80" alt="logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link btn-custom" href="#" data-toggle="modal" data-target="#personalityTestModal">自動化報表</a>
+                <a class="nav-item nav-link btn-custom" href="#" data-toggle="modal" data-target="#fingerprintTestModal">指紋天賦測試</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Banner Image -->
+    <div class="banner-container">
+        <img src="{{ url_for('static', filename='images/swp-01.png') }}" class="banner-image" alt="Banner">
+    </div>
+
+    <!-- Personality Test Modal -->
+    <div class="modal fade" id="personalityTestModal" tabindex="-1" aria-labelledby="personalityTestModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="personalityTestModalLabel">自動化報表</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- 添加 method="POST" 和 action 屬性 -->
+                    <form id="fingersDataForm" method="POST" action="/submit-personality-test">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="finger-column">手指</th>
+                                    <th scope="col">紋型</th>
+                                    <th scope="col">左量化</th>
+                                    <th scope="col">右量化</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- 重複每個手指的輸入欄位，並為每個輸入添加 name 屬性 -->
+                                <tr>
+                                    <td class="col-md-3">L1 - 左手大拇指</td>
+                                    <td class="col-md-3">
+                                        <select class="form-control" name="L1_code" id="L1-code">
+                                            <option value=""></option>
+                                            <option value="Wp">Wp</option>
+                                            <option value="We">We</option>
+                                            <option value="Wt">Wt</option>
+                                            <option value="Ws">Ws</option>
+                                            <option value="Wc">Wc</option>
+                                            <option value="U">U</option>
+                                            <option value="R">R</option>
+                                            <option value="Au">Au</option>
+                                            <option value="Ar">Ar</option>
+                                            <option value="As">As</option>
+                                            <option value="At">At</option>
+                                        </select>
+                                    </td>
+                                    <td class="col-md-2"><input type="number" class="form-control" name="L1_left_value" id="L1-left-value" placeholder=""></td>
+                                    <td class="col-md-2"><input type="number" class="form-control" name="L1_right_value" id="L1-right-value" placeholder=""></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-3">L2 - 左手食指</td>
+                                    <td class="col-md-3">
+                                        <select class="form-control" name="L2_code" id="L2-code">
+                                            <option value=""></option>
+                                            <option value="Wp">Wp</option>
+                                            <option value="We">We</option>
+                                            <option value="Wt">Wt</option>
+                                            <option value="Ws">Ws</option>
+                                            <option value="Wc">Wc</option>
+                                            <option value="U">U</option>
+                                            <option value="R">R</option>
+                                            <option value="Au">Au</option>
+                                            <option value="Ar">Ar</option>
+                                            <option value="As">As</option>
+                                            <option value="At">At</option>
+                                        </select>
+                                    </td>
+                                    <td class="col-md-2"><input type="number" class="form-control" name="L2_left_value" id="L2-left-value" placeholder=""></td>
+                                    <td class="col-md-2"><input type="number" class="form-control" name="L2_right_value" id="L2-right-value" placeholder=""></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-3">L3 - 左手中指</td>
+                                    <td class="col-md-3">
+                                        <select class="form-control" name="L3_code" id="L3-code">
+                                            <option value=""></option>
+                                            <option value="Wp">Wp</option>
+                                            <option value="We">We</option>
+                                            <option value="Wt">Wt</option>
+                                            <option value="Ws">Ws</option>
+                                            <option value="Wc">Wc</option>
+                                            <option value="U">U</option>
+                                            <option value="R">R</option>
+                                            <option value="Au">Au</option>
+                                            <option value="Ar">Ar</option>
+                                            <option value="As">As</option>
+                                            <option value="At">At</option>
+                                        </select>
+                                    </td>
+                                    <td class="col-md-2"><input type="number" class="form-control" name="L3_left_value" id="L3-left-value" placeholder=""></td>
+                                    <td class="col-md-2"><input type="number" class="form-control" name="L3_right_value" id="L3-right-value" placeholder=""></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-3">L4 - 左手無名指</td>
+                                    <td class="col-md-3">
+                                        <select class="form-control" name="L4_code" id="L4-code">
+                                            <option value=""></option>
+                                            <option value="Wp">Wp</option>
+                                            <option value="We">We</option>
+                                            <option value="Wt">Wt</option>
+                                            <option value="Ws">Ws</option>
+                                            <option value="Wc">Wc</option>
+                                            <option value="U">U</option>
+                                            <option value="R">R</option>
+                                            <option value="Au">Au</option>
+                                            <option value="Ar">Ar</option>
+                                            <option value="As">As</option>
+                                            <option value="At">At</option>
+                                        </select>
+                                    </td>
+                                    <td class="col-md-2"><input type="number" class="form-control" name="L4_left_value" id="L4-left-value" placeholder=""></td>
+                                    <td class="col-md-2"><input type="number" class="form-control" name="L4_right_value" id="L4-right-value" placeholder=""></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-3">L5 - 左手小指</td>
+                                    <td class="col-md-3">
+                                        <select class="form-control" name="L5_code" id="L5-code">
+                                            <option value=""></option>
+                                            <option value="Wp">Wp</option>
+                                            <option value="We">We</option>
+                                            <option value="Wt">Wt</option>
+                                            <option value="Ws">Ws</option>
+                                            <option value="Wc">Wc</option>
+                                            <option value="U">U</option>
+                                            <option value="R">R</option>
+                                            <option value="Au">Au</option>
+                                            <option value="Ar">Ar</option>
+                                            <option value="As">As</option>
+                                            <option value="At">At</option>
+                                        </select>
+                                    </td>
+                                    <td class="col-md-2"><input type="number" class="form-control" name="L5_left_value" id="L5-left-value" placeholder=""></td>
+                                    <td class="col-md-2"><input type="number" class="form-control" name="L5_right_value" id="L5-right-value" placeholder=""></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-3">R1 - 右手大拇指</td>
+                                    <td class="col-md-3">
+                                        <select class="form-control" name="R1_code" id="R1-code">
+                                            <option value=""></option>
+                                            <option value="Wp">Wp</option>
+                                            <option value="We">We</option>
+                                            <option value="Wt">Wt</option>
+                                            <option value="Ws">Ws</option>
+                                            <option value="Wc">Wc</option>
+                                            <option value="U">U</option>
+                                            <option value="R">R</option>
+                                            <option value="Au">Au</option>
+                                            <option value="Ar">Ar</option>
+                                            <option value="As">As</option>
+                                            <option value="At">At</option>
+                                        </select>
+                                    </td>
+                                    <td class="col-md-2"><input type="number" class="form-control" name="R1_left_value" id="R1-left-value" placeholder=""></td>
+                                    <td class="col-md-2"><input type="number" class="form-control" name="R1_right_value" id="R1-right-value" placeholder=""></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-3">R2 - 右手食指</td>
+                                    <td class="col-md-3">
+                                        <select class="form-control" name="R2_code" id="R2-code">
+                                            <option value=""></option>
+                                            <option value="Wp">Wp</option>
+                                            <option value="We">We</option>
+                                            <option value="Wt">Wt</option>
+                                            <option value="Ws">Ws</option>
+                                            <option value="Wc">Wc</option>
+                                            <option value="U">U</option>
+                                            <option value="R">R</option>
+                                            <option value="Au">Au</option>
+                                            <option value="Ar">Ar</option>
+                                            <option value="As">As</option>
+                                            <option value="At">At</option>
+                                        </select>
+                                    </td>
+                                    <td class="col-md-2"><input type="number" class="form-control" name="R2_left_value" id="R2-left-value" placeholder=""></td>
+                                    <td class="col-md-2"><input type="number" class="form-control" name="R2_right_value" id="R2-right-value" placeholder=""></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-3">R3 - 右手中指</td>
+                                    <td class="col-md-3">
+                                        <select class="form-control" name="R3_code" id="R3-code">
+                                            <option value=""></option>
+                                            <option value="Wp">Wp</option>
+                                            <option value="We">We</option>
+                                            <option value="Wt">Wt</option>
+                                            <option value="Ws">Ws</option>
+                                            <option value="Wc">Wc</option>
+                                            <option value="U">U</option>
+                                            <option value="R">R</option>
+                                            <option value="Au">Au</option>
+                                            <option value="Ar">Ar</option>
+                                            <option value="As">As</option>
+                                            <option value="At">At</option>
+                                        </select>
+                                    </td>
+                                    <td class="col-md-2"><input type="number" class="form-control" name="R3_left_value" id="R3-left-value" placeholder=""></td>
+                                    <td class="col-md-2"><input type="number" class="form-control" name="R3_right_value" id="R3-right-value" placeholder=""></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-3">R4 - 右手無名指</td>
+                                    <td class="col-md-3">
+                                        <select class="form-control" name="R4_code" id="R4-code">
+                                            <option value=""></option>
+                                            <option value="Wp">Wp</option>
+                                            <option value="We">We</option>
+                                            <option value="Wt">Wt</option>
+                                            <option value="Ws">Ws</option>
+                                            <option value="Wc">Wc</option>
+                                            <option value="U">U</option>
+                                            <option value="R">R</option>
+                                            <option value="Au">Au</option>
+                                            <option value="Ar">Ar</option>
+                                            <option value="As">As</option>
+                                            <option value="At">At</option>
+                                        </select>
+                                    </td>
+                                    <td class="col-md-2"><input type="number" class="form-control" name="R4_left_value" id="R4-left-value" placeholder=""></td>
+                                    <td class="col-md-2"><input type="number" class="form-control" name="R4_right_value" id="R4-right-value" placeholder=""></td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-3">R5 - 右手小指</td>
+                                    <td class="col-md-3">
+                                        <select class="form-control" name="R5_code" id="R5-code">
+                                            <option value=""></option>
+                                            <option value="Wp">Wp</option>
+                                            <option value="We">We</option>
+                                            <option value="Wt">Wt</option>
+                                            <option value="Ws">Ws</option>
+                                            <option value="Wc">Wc</option>
+                                            <option value="U">U</option>
+                                            <option value="R">R</option>
+                                            <option value="Au">Au</option>
+                                            <option value="Ar">Ar</option>
+                                            <option value="As">As</option>
+                                            <option value="At">At</option>
+                                        </select>
+                                    </td>
+                                    <td class="col-md-2"><input type="number" class="form-control" name="R5_left_value" id="R5-left-value" placeholder=""></td>
+                                    <td class="col-md-2"><input type="number" class="form-control" name="R5_right_value" id="R5-right-value" placeholder=""></td>
+                                </tr>
+                                <tr>
+                                    <td>報表名稱</td>
+                                    <td colspan="3"><input type="text" class="form-control" name="user_name" id="user-name" placeholder="請輸入您的名字"></td>
+                                </tr>
+                                <tr>
+                                    <td>選擇方案</td>
+                                    <td colspan="3">
+                                        <select class="form-control" name="pricing_plan" id="pricing-plan">
+                                            <option value=""></option>
+                                            <option value="child_6980">兒童 6,980</option>
+                                            <option value="child_12980">兒童 12,980</option>
+                                            <option value="student_12980">學涯 12,980</option>
+                                            <option value="adult_6980">成人 6,980</option>
+                                            <option value="adult_12980">成人 12,980</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <!-- ...其他手指的欄位... -->
+                            </tbody>
+                        </table>
+                        <!-- 添加提交按鈕 -->
+                        <button type="submit" class="btn btn-primary">提交</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>    
+
+    <!-- Fingerprint Test Modal -->
+    <div class="modal fade" id="fingerprintTestModal" tabindex="-1" aria-labelledby="fingerprintTestModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fingerprintTestModalLabel">指紋天賦測試</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form for fingerprint test -->
+                    <!-- Add your form fields here -->
+                    <p>這裡將是輸入十根手指的代碼以及相對的數值的地方。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Tutorial Section -->
+    <div class="container mt-4">
+        <h2>教學影片</h2>
+        <p>這裡將放置教學影片，指導使用者如何判別手指的對應代碼以及數值。</p>
+        <!-- Embed your video below -->
+        <div class="embed-responsive embed-responsive-16by9">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/ar0QMTcOW9E?si=RHkg03wRZyVFgHL1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='js/form-validation.js') }}"></script>
+</body>
+
+</html>
