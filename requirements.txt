@@ -3,3 +3,4 @@ numpy
 matplotlib
 python-docx
 mailmerge
+docx-mailmerge
