@@ -1,6 +1,5 @@
-Flask
-numpy
-matplotlib
-python-docx
-mailmerge
-docx-mailmerge
+flask==2.2.5
+numpy==1.21.6
+matplotlib==3.5.3
+python-docx==0.8.11
+docx-mailmerge==0.5.0
