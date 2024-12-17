@@ -47,6 +47,8 @@ def generate_report_api():
 
     report_url = url_for('download', filename=f"{user_name}_{pricing_plan}.docx", _external=True)
 
+    print(report_url)
+
     return jsonify({"report_url": report_url})
 
 
