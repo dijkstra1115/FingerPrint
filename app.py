@@ -43,6 +43,8 @@ def generate_report_api():
     pricing_plan = request.json.get('pricing_plan')
     data = request.json.get('data')
 
+    print(user_name, pricing_plan, data)
+
     generate_report(user_name, pricing_plan, data)
 
     report_url = url_for('download', filename=f"{user_name}_{pricing_plan}.docx", _external=True)
