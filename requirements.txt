@@ -1,5 +1,6 @@
-flask==2.2.5
-numpy==1.21.6
+fastapi==0.108.0
+uvicorn==0.25.0
 matplotlib==3.5.3
 python-docx==0.8.11
 docx-mailmerge==0.5.0
+Jinja2==3.1.4

@@ -1,65 +1,68 @@
-from unicodedata import name
-from flask import Flask, request, render_template, send_from_directory, redirect, url_for, jsonify
-from modules.report_generator import generate_report
+from fastapi import FastAPI, Request, Form
+from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import JSONResponse
 import os
+from modules.report_generator import generate_report
 
-app = Flask(__name__)
+app = FastAPI()
+templates = Jinja2Templates(directory="templates")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    return render_template('index.html')
+@app.get("/", response_class=HTMLResponse)
+async def index(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
 
-
-@app.route('/submit-personality-test', methods=['POST'])
-def submit_personality_test():
-    if request.method == 'POST':
-        # 獲取表單數據
-        data = {}
-        fingers = ['L1', 'L2', 'L3', 'L4', 'L5', 'R1', 'R2', 'R3', 'R4', 'R5']
-
-        for finger in fingers:
-            data[f'{finger}_code'] = request.form.get(f'{finger}_code')
-            data[f'{finger}_left_value'] = request.form.get(f'{finger}_left_value')
-            data[f'{finger}_right_value'] = request.form.get(f'{finger}_right_value')
-
-        user_name = request.form.get('user_name')
-        pricing_plan = request.form.get('pricing_plan')
-
-        # 在這裡處理這些數據，例如存儲到數據庫或進行計算
-
-        generate_report(user_name, pricing_plan, data)
-
-        file_path = os.path.join("download", f"{user_name}_{pricing_plan}.docx")
-
-        return render_template('download.html', file_path = file_path)
-
-        # 處理完後重定向到某個頁面，或返回結果
-        # return redirect(url_for('index'))  # 重定向回主頁面
-
-
-@app.route('/generate_report', methods=['POST'])
-def generate_report_api():
-    user_name = request.json.get('user_name')
-    pricing_plan = request.json.get('pricing_plan')
-    data = request.json.get('data')
-
-    print(user_name, pricing_plan, data)
+@app.post("/submit-personality-test", response_class=HTMLResponse)
+async def submit_personality_test(
+    request: Request,
+    user_name: str = Form(...),
+    pricing_plan: str = Form(...),
+    L1_code: str = Form(...), L1_left_value: int = Form(...), L1_right_value: int = Form(...),
+    L2_code: str = Form(...), L2_left_value: int = Form(...), L2_right_value: int = Form(...),
+    L3_code: str = Form(...), L3_left_value: int = Form(...), L3_right_value: int = Form(...),
+    L4_code: str = Form(...), L4_left_value: int = Form(...), L4_right_value: int = Form(...),
+    L5_code: str = Form(...), L5_left_value: int = Form(...), L5_right_value: int = Form(...),
+    R1_code: str = Form(...), R1_left_value: int = Form(...), R1_right_value: int = Form(...),
+    R2_code: str = Form(...), R2_left_value: int = Form(...), R2_right_value: int = Form(...),
+    R3_code: str = Form(...), R3_left_value: int = Form(...), R3_right_value: int = Form(...),
+    R4_code: str = Form(...), R4_left_value: int = Form(...), R4_right_value: int = Form(...),
+    R5_code: str = Form(...), R5_left_value: int = Form(...), R5_right_value: int = Form(...)
+):
+    data = {
+        "L1_code": L1_code, "L1_left_value": L1_left_value, "L1_right_value": L1_right_value,
+        "L2_code": L2_code, "L2_left_value": L2_left_value, "L2_right_value": L2_right_value,
+        "L3_code": L3_code, "L3_left_value": L3_left_value, "L3_right_value": L3_right_value,
+        "L4_code": L4_code, "L4_left_value": L4_left_value, "L4_right_value": L4_right_value,
+        "L5_code": L5_code, "L5_left_value": L5_left_value, "L5_right_value": L5_right_value,
+        "R1_code": R1_code, "R1_left_value": R1_left_value, "R1_right_value": R1_right_value,
+        "R2_code": R2_code, "R2_left_value": R2_left_value, "R2_right_value": R2_right_value,
+        "R3_code": R3_code, "R3_left_value": R3_left_value, "R3_right_value": R3_right_value,
+        "R4_code": R4_code, "R4_left_value": R4_left_value, "R4_right_value": R4_right_value,
+        "R5_code": R5_code, "R5_left_value": R5_left_value, "R5_right_value": R5_right_value,
+    }
 
     generate_report(user_name, pricing_plan, data)
+    file_path = request.url_for('download_file', filename=f"{user_name}_{pricing_plan}.docx")
+    return templates.TemplateResponse("download.html", {"request": request, "file_path": file_path})
 
-    report_url = url_for('download_file', filename=f"{user_name}_{pricing_plan}.docx", _external=True)
+@app.post("/generate_report")
+async def generate_report_api(request: Request):
+    body = await request.json()
+    user_name = body.get('user_name')
+    pricing_plan = body.get('pricing_plan')
+    data = body.get('data')
 
-    print(report_url)
+    generate_report(user_name, pricing_plan, data)
+    report_url = request.url_for('download_file', filename=f"{user_name}_{pricing_plan}.docx")
+    return JSONResponse(content={"report_url": report_url})
 
-    return jsonify({"report_url": report_url})
-
-
-@app.route('/download/<path:filename>', methods=['GET'])
-def download_file(filename):
-    dirname = os.path.dirname(os.path.realpath(__file__))
-    output_dir = os.path.join(dirname, "output")
-    return send_from_directory(output_dir, filename, as_attachment=True)
-
+@app.get("/download/{filename}")
+async def download_file(filename: str):
+    file_path = os.path.join("download", filename)
+    return FileResponse(file_path, media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document', filename=filename)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=5000, log_level="error")
