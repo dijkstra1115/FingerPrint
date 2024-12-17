@@ -1,5 +1,5 @@
 from unicodedata import name
-from flask import Flask, request, render_template, send_from_directory, redirect, url_for
+from flask import Flask, request, render_template, send_from_directory, redirect, url_for, jsonify
 from modules.report_generator import generate_report
 import os
 
@@ -8,6 +8,7 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html')
+
 
 @app.route('/submit-personality-test', methods=['POST'])
 def submit_personality_test():
@@ -35,11 +36,26 @@ def submit_personality_test():
         # 處理完後重定向到某個頁面，或返回結果
         # return redirect(url_for('index'))  # 重定向回主頁面
 
+
+@app.route('/generate_report', methods=['POST'])
+def generate_report_api():
+    user_name = request.json.get('user_name')
+    pricing_plan = request.json.get('pricing_plan')
+    data = request.json.get('data')
+
+    generate_report(user_name, pricing_plan, data)
+
+    report_url = url_for('download', filename=f"{user_name}_{pricing_plan}.docx", _external=True)
+
+    return jsonify({"report_url": report_url})
+
+
 @app.route('/download/<path:filename>', methods=['GET'])
 def download_file(filename):
     dirname = os.path.dirname(os.path.realpath(__file__))
     output_dir = os.path.join(dirname, "output")
     return send_from_directory(output_dir, filename, as_attachment=True)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
