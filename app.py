@@ -47,7 +47,7 @@ def generate_report_api():
 
     generate_report(user_name, pricing_plan, data)
 
-    report_url = url_for('download', filename=f"{user_name}_{pricing_plan}.docx", _external=True)
+    report_url = url_for('download_file', filename=f"{user_name}_{pricing_plan}.docx", _external=True)
 
     print(report_url)
 
