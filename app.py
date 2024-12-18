@@ -3,17 +3,31 @@ from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 import os
 from modules.report_generator import generate_report
 
 app = FastAPI()
-templates = Jinja2Templates(directory="templates")
+
+# app.add_middleware(
+#        CORSMiddleware,
+#        allow_origins=["*"],  # 允许所有来源，您可以根据需要限制
+#        allow_credentials=True,
+#        allow_methods=["*"],  # 允许所有方法
+#        allow_headers=["*"],  # 允许所有头部
+#    )
+
 # 靜態下載路徑 or 動態下載路徑
 # app.mount("/download", StaticFiles(directory="output"), name="download_file")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
+templates = Jinja2Templates(directory="templates")
+
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
+    print("Request URL:", request.url)
+    print("Available routes:", app.routes)
+    print("Static URL:", request.url_for('static', path="css/styles.css"))  # 添加调试信息
     return templates.TemplateResponse("index.html", {"request": request})
 
 @app.post("/submit-personality-test", response_class=HTMLResponse)
