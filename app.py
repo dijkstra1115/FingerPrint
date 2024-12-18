@@ -14,7 +14,7 @@ app = FastAPI()
 # 添加 TrustedHostMiddleware，确保只接受来自指定主机的请求
 app.add_middleware(
     TrustedHostMiddleware,
-    allowed_hosts=['id3afingerprint.zeabur.app', '*.id3afingerprint.zeabur.app']  # 替换为您的域名
+    allowed_hosts=['id3afingerprint.zeabur.app', '*.id3afingerprint.zeabur.app', 'id3a.zeabur.app', '*.id3a.zeabur.app']  # 替换为您的域名
 )
 
 # 添加 CORS 中间件
