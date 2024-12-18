@@ -8,7 +8,7 @@ from modules.report_generator import generate_report
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
-app.mount("/download", StaticFiles(directory="download"), name="download")
+# app.mount("/download", StaticFiles(directory="output"), name="download_file")
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
@@ -60,7 +60,7 @@ async def generate_report_api(request: Request):
 
 @app.get("/download/{filename}")
 async def download_file(filename: str):
-    file_path = os.path.join("download", filename)
+    file_path = os.path.join("output", filename)
     return FileResponse(file_path, media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document', filename=filename)
 
 if __name__ == '__main__':
