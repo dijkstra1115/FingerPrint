@@ -8,7 +8,9 @@ from modules.report_generator import generate_report
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
+# 靜態下載路徑 or 動態下載路徑
 # app.mount("/download", StaticFiles(directory="output"), name="download_file")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
@@ -55,7 +57,7 @@ async def generate_report_api(request: Request):
     data = body.get('data')
 
     generate_report(user_name, pricing_plan, data)
-    report_url = request.url_for('download_file', filename=f"{user_name}_{pricing_plan}.docx")
+    report_url = str(request.url_for('download_file', filename=f"{user_name}_{pricing_plan}.docx"))
     return JSONResponse(content={"report_url": report_url})
 
 @app.get("/download/{filename}")
