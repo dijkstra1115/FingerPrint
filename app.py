@@ -9,13 +9,13 @@ from modules.report_generator import generate_report
 
 app = FastAPI()
 
-# app.add_middleware(
-#        CORSMiddleware,
-#        allow_origins=["*"],  # 允许所有来源，您可以根据需要限制
-#        allow_credentials=True,
-#        allow_methods=["*"],  # 允许所有方法
-#        allow_headers=["*"],  # 允许所有头部
-#    )
+app.add_middleware(
+       CORSMiddleware,
+       allow_origins=["*"],  # 允许所有来源，您可以根据需要限制
+       allow_credentials=True,
+       allow_methods=["*"],  # 允许所有方法
+       allow_headers=["*"],  # 允许所有头部
+   )
 
 # 靜態下載路徑 or 動態下載路徑
 # app.mount("/download", StaticFiles(directory="output"), name="download_file")
