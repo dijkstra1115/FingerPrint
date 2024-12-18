@@ -8,7 +8,7 @@ from modules.report_generator import generate_report
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/download", StaticFiles(directory="download"), name="download")
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
