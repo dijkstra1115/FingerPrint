@@ -4,18 +4,30 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.trustedhost import TrustedHostMiddleware
+from starlette.middleware.httpsredirect import HTTPSRedirectMiddleware
 import os
 from modules.report_generator import generate_report
 
 app = FastAPI()
 
+# 添加 TrustedHostMiddleware，确保只接受来自指定主机的请求
+app.add_middleware(
+    TrustedHostMiddleware,
+    allowed_hosts=['id3afingerprint.zeabur.app', '*.id3afingerprint.zeabur.app']  # 替换为您的域名
+)
+
+# 添加 CORS 中间件
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 允许所有来源，您可以根据需要限制
-    allow_credentials=False,
-    allow_methods=["*"],  # 允许所有方法
+    allow_origins=["*"],  # 如果需要，可以限制为特定的来源
+    allow_credentials=True,  # 允许跨域请求携带凭据
+    allow_methods=["*"],  # 允许所有 HTTP 方法
     allow_headers=["*"],  # 允许所有头部
 )
+
+# 添加 HTTPS 重定向中间件
+app.add_middleware(HTTPSRedirectMiddleware)
 
 # 靜態下載路徑 or 動態下載路徑
 # app.mount("/download", StaticFiles(directory="output"), name="download_file")
